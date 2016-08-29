@@ -1,4 +1,4 @@
-update=Mon 29 Aug 2016 21:24:18 CEST
+update=Mon 29 Aug 2016 21:56:17 CEST
 version=1
 last_client=kicad
 [pcbnew]
@@ -56,6 +56,6 @@ LibName26=opto
 LibName27=atmel
 LibName28=contrib
 LibName29=valves
-LibName30=FreqSynth
+LibName30=lib/FreqSynth
 [general]
 version=1
