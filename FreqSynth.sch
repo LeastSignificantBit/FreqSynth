@@ -152,9 +152,7 @@ F 3 "" H 2100 1300 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2100 1150 2100 1250
-Wire Wire Line
-	2100 1250 2100 1350
+	2100 1150 2100 1350
 Wire Wire Line
 	2100 1250 2000 1250
 $Comp
@@ -171,9 +169,7 @@ $EndComp
 Wire Wire Line
 	2100 2000 2100 2050
 Wire Wire Line
-	1850 2000 1950 2000
-Wire Wire Line
-	1950 2000 2100 2000
+	1850 2000 2100 2000
 Wire Wire Line
 	1950 2000 1950 1750
 Wire Wire Line
@@ -188,9 +184,7 @@ Wire Wire Line
 	2000 1150 2100 1150
 Connection ~ 2100 1250
 Wire Wire Line
-	1850 2400 2650 2400
-Wire Wire Line
-	2650 2400 2950 2400
+	1850 2400 2950 2400
 Text Label 2000 3000 2    60   ~ 0
 MISO
 Text Label 2000 3100 2    60   ~ 0
@@ -302,10 +296,6 @@ Wire Wire Line
 	1950 4550 1750 4550
 Wire Wire Line
 	1600 4750 1600 4850
-Wire Wire Line
-	1600 4850 1600 4850
-Wire Wire Line
-	1600 4850 1600 4850
 $Comp
 L GNDD #PWR06
 U 1 1 57C489FF
@@ -361,9 +351,7 @@ Wire Wire Line
 Wire Wire Line
 	2500 3300 2500 1050
 Wire Wire Line
-	2000 1050 2500 1050
-Wire Wire Line
-	2500 1050 3000 1050
+	2000 1050 3000 1050
 Connection ~ 2500 1050
 Wire Wire Line
 	3800 2950 4350 2950
@@ -380,13 +368,9 @@ Wire Wire Line
 Wire Wire Line
 	3800 2500 4350 2500
 Wire Wire Line
-	3850 1050 3950 1050
+	3850 1050 4350 1050
 Wire Wire Line
-	3950 1050 4350 1050
-Wire Wire Line
-	3850 1200 4300 1200
-Wire Wire Line
-	4300 1200 4350 1200
+	3850 1200 4350 1200
 Wire Wire Line
 	3850 1350 4350 1350
 Wire Wire Line
