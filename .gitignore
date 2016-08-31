@@ -3,8 +3,9 @@
 *.bck
 *.kicad_pcb-bak
 *-cache.lib
-# *-rescue.lib
+*-rescue.lib
 ftp-lib-table
+_saved_*.sch
 
 # for external tools
 *.dsn

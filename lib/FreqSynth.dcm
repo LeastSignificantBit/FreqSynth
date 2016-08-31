@@ -1,0 +1,12 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP MAX2870
+F https://datasheets.maximintegrated.com/en/ds/MAX2870.pdf
+$ENDCMP
+#
+$CMP TRF37A75
+D RF Amplifier IC Cellular, CATV, DBS 40MHz ~ 6GHz 8-WSON
+F http://www.ti.com/lit/ds/symlink/trf37a75.pdf
+$ENDCMP
+#
+#End Doc Library
