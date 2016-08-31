@@ -1,4 +1,5 @@
 EESchema Schematic File Version 2
+LIBS:FreqSynth-rescue
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -442,6 +443,7 @@ F4 "ATTEN_CS" I L 8100 1950 60
 F5 "ATTEN_SCK" I L 8100 1850 60 
 F6 "RF_IN" I L 8100 1350 60 
 F7 "RF_OUT" O R 9250 1350 60 
+F8 "VCC_ATTEN" I L 8100 1100 60 
 $EndSheet
 Wire Wire Line
 	3800 3750 4000 3750
@@ -556,8 +558,13 @@ Wire Wire Line
 Wire Wire Line
 	4300 750  7750 750 
 Wire Wire Line
-	7750 750  7750 950 
+	7750 750  7750 1100
 Wire Wire Line
 	7750 950  8100 950 
 Connection ~ 4300 1200
+Wire Notes Line
+	7050 1800 7050 1750
+Wire Wire Line
+	7750 1100 8100 1100
+Connection ~ 7750 950 
 $EndSCHEMATC

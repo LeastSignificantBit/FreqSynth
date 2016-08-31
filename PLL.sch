@@ -1,4 +1,5 @@
 EESchema Schematic File Version 2
+LIBS:FreqSynth-rescue
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -888,6 +889,7 @@ F 0 "U1" V 5200 2700 60  0000 L CNN
 F 1 "MAX2870" V 5000 2550 60  0000 L CNN
 F 2 "Housings_DFN_QFN:QFN-32-1EP_5x5mm_Pitch0.5mm" H 3850 3750 60  0001 C CNN
 F 3 "" H 3850 3750 60  0001 C CNN
+F 4 "MAX2870ETJ+" H 5000 2750 60  0001 C CNN "manf#"
 	1    5000 2750
 	0    1    1    0   
 $EndComp
