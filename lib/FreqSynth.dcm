@@ -1,5 +1,10 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP LMH2110
+D 8-GHz Logarithmic RMS Power Detector with 45-dB Dynamic Range
+F http://www.ti.com/lit/ds/symlink/lmh2110.pdf
+$ENDCMP
+#
 $CMP MAX2870
 F https://datasheets.maximintegrated.com/en/ds/MAX2870.pdf
 $ENDCMP
