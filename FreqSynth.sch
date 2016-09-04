@@ -68,13 +68,13 @@ $EndSheet
 $Comp
 L BARREL_JACK P1
 U 1 1 57C489F3
-P 1700 1150
-F 0 "P1" H 1900 950 50  0000 C CNN
-F 1 "CPL-CON-BARREL-2.1MM" H 1681 1384 50  0000 C CNN
-F 2 "Connect:BARREL_JACK" H 1700 1150 50  0001 C CNN
-F 3 "" H 1700 1150 50  0001 C CNN
-F 4 "RASM722X" H 1700 1150 60  0001 C CNN "manf#"
-	1    1700 1150
+P 1400 1150
+F 0 "P1" H 1600 950 50  0000 C CNN
+F 1 "CPL-CON-BARREL-2.1MM" H 1381 1384 50  0000 C CNN
+F 2 "Connect:BARREL_JACK" H 1400 1150 50  0001 C CNN
+F 3 "" H 1400 1150 50  0001 C CNN
+F 4 "RASM722X" H 1400 1150 60  0001 C CNN "manf#"
+	1    1400 1150
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
@@ -82,10 +82,10 @@ Wire Wire Line
 Wire Wire Line
 	1650 3400 1850 3400
 $Comp
-L GNDPWR #PWR01
+L GNDPWR #PWR6
 U 1 1 57C489F4
 P 1850 4050
-F 0 "#PWR01" H 1850 3850 50  0001 C CNN
+F 0 "#PWR6" H 1850 3850 50  0001 C CNN
 F 1 "GNDPWR" H 2050 4000 50  0000 C CNN
 F 2 "" H 1850 4000 50  0000 C CNN
 F 3 "" H 1850 4000 50  0000 C CNN
@@ -93,25 +93,25 @@ F 3 "" H 1850 4000 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GNDPWR #PWR02
+L GNDPWR #PWR1
 U 1 1 57C489F5
-P 2100 1350
-F 0 "#PWR02" H 2100 1150 50  0001 C CNN
-F 1 "GNDPWR" H 2300 1300 50  0000 C CNN
-F 2 "" H 2100 1300 50  0000 C CNN
-F 3 "" H 2100 1300 50  0000 C CNN
-	1    2100 1350
+P 1800 1350
+F 0 "#PWR1" H 1800 1150 50  0001 C CNN
+F 1 "GNDPWR" H 2000 1300 50  0000 C CNN
+F 2 "" H 1800 1300 50  0000 C CNN
+F 3 "" H 1800 1300 50  0000 C CNN
+	1    1800 1350
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2100 1150 2100 1350
+	1800 1150 1800 1350
 Wire Wire Line
-	2100 1250 2000 1250
+	1800 1250 1700 1250
 $Comp
-L GNDPWR #PWR03
+L GNDPWR #PWR3
 U 1 1 57C489F6
 P 2050 2000
-F 0 "#PWR03" H 2050 1800 50  0001 C CNN
+F 0 "#PWR3" H 2050 1800 50  0001 C CNN
 F 1 "GNDPWR" H 2250 1950 50  0000 C CNN
 F 2 "" H 2050 1950 50  0000 C CNN
 F 3 "" H 2050 1950 50  0000 C CNN
@@ -119,8 +119,8 @@ F 3 "" H 2050 1950 50  0000 C CNN
 	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	2000 1150 2100 1150
-Connection ~ 2100 1250
+	1700 1150 1800 1150
+Connection ~ 1800 1250
 Wire Wire Line
 	1850 2400 2950 2400
 Text Label 4050 2750 2    60   ~ 0
@@ -161,10 +161,10 @@ F 4 "" H 5800 2100 60  0001 C CNN "manf#"
 	1    0    0    -1  
 $EndComp
 $Comp
-L Earth #PWR04
+L Earth #PWR5
 U 1 1 57C489F9
 P 6000 2500
-F 0 "#PWR04" H 6000 2250 50  0001 C CNN
+F 0 "#PWR5" H 6000 2250 50  0001 C CNN
 F 1 "Earth" H 6000 2350 50  0001 C CNN
 F 2 "" H 6000 2500 50  0000 C CNN
 F 3 "" H 6000 2500 50  0000 C CNN
@@ -172,10 +172,10 @@ F 3 "" H 6000 2500 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Earth #PWR05
+L Earth #PWR4
 U 1 1 57C489FA
 P 5800 2500
-F 0 "#PWR05" H 5800 2250 50  0001 C CNN
+F 0 "#PWR4" H 5800 2250 50  0001 C CNN
 F 1 "Earth" H 5800 2350 50  0001 C CNN
 F 2 "" H 5800 2500 50  0000 C CNN
 F 3 "" H 5800 2500 50  0000 C CNN
@@ -201,7 +201,7 @@ F4 "3V3" I L 2950 4950 60
 F5 "INT_EN" I L 2950 4750 60 
 $EndSheet
 Wire Wire Line
-	2950 2650 2800 2650
+	2550 2650 2950 2650
 $Comp
 L BNC P7
 U 1 1 57C489FC
@@ -231,10 +231,10 @@ Wire Wire Line
 Wire Wire Line
 	1600 4750 1600 4850
 $Comp
-L GNDD #PWR06
+L GNDD #PWR7
 U 1 1 57C489FF
 P 1600 4850
-F 0 "#PWR06" H 1600 4600 50  0001 C CNN
+F 0 "#PWR7" H 1600 4600 50  0001 C CNN
 F 1 "GNDD" H 1605 4677 50  0000 C CNN
 F 2 "" H 1600 4850 50  0000 C CNN
 F 3 "" H 1600 4850 50  0000 C CNN
@@ -244,31 +244,9 @@ $EndComp
 Wire Wire Line
 	2250 4550 2950 4550
 Wire Wire Line
-	2800 4950 2950 4950
-$Comp
-L VCC #PWR07
-U 1 1 57C48A00
-P 2800 2650
-F 0 "#PWR07" H 2800 2500 50  0001 C CNN
-F 1 "VCC" V 2850 2600 50  0000 L CNN
-F 2 "" H 2800 2650 50  0000 C CNN
-F 3 "" H 2800 2650 50  0000 C CNN
-	1    2800 2650
-	0    -1   -1   0   
-$EndComp
-$Comp
-L VCC #PWR08
-U 1 1 57C48A01
-P 2800 4950
-F 0 "#PWR08" H 2800 4800 50  0001 C CNN
-F 1 "VCC" V 2850 4950 50  0000 L CNN
-F 2 "" H 2800 4950 50  0000 C CNN
-F 3 "" H 2800 4950 50  0000 C CNN
-	1    2800 4950
-	0    -1   -1   0   
-$EndComp
+	2550 4950 2950 4950
 $Sheet
-S 3000 900  850  600 
+S 3000 900  850  800 
 U 57C48A02
 F0 "Power" 60
 F1 "Power.sch" 60
@@ -277,13 +255,13 @@ F3 "VUSB" I L 3000 1350 60
 F4 "VCC_RF" O R 3850 1200 60 
 F5 "VCC_PLL" O R 3850 1350 60 
 F6 "VIN" I L 3000 1050 60 
+F7 "VCC_3v3" O R 3850 1500 60 
+F8 "VCC_5v0" O R 3850 1650 60 
 $EndSheet
 Wire Wire Line
 	2650 2400 2650 1350
 Wire Wire Line
 	2650 1350 3000 1350
-Wire Wire Line
-	2000 1050 3000 1050
 Wire Wire Line
 	3800 2950 4350 2950
 Wire Wire Line
@@ -318,27 +296,16 @@ Wire Wire Line
 	4300 4550 4300 3500
 Wire Wire Line
 	4300 3500 4350 3500
-$Comp
-L VCC #PWR09
-U 1 1 57C48A03
-P 3950 850
-F 0 "#PWR09" H 3950 700 50  0001 C CNN
-F 1 "VCC" V 4000 800 50  0000 L CNN
-F 2 "" H 3950 850 50  0000 C CNN
-F 3 "" H 3950 850 50  0000 C CNN
-	1    3950 850 
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
 	4300 4550 3950 4550
 Text Notes 2700 2550 0    60   ~ 0
 35mA
 Text Notes 2600 4850 0    60   ~ 0
 34mA
-Text Notes 3950 1050 0    60   ~ 0
+Text Notes 4000 1050 0    60   ~ 0
 120mA
 Wire Wire Line
-	3950 850  3950 1050
+	3950 800  3950 1050
 Connection ~ 3950 1050
 $Sheet
 S 6550 850  900  1250
@@ -370,10 +337,10 @@ F 4 "" H 9800 1350 60  0001 C CNN "manf#"
 	1    0    0    -1  
 $EndComp
 $Comp
-L Earth #PWR010
+L Earth #PWR2
 U 1 1 57C48A06
 P 9800 1750
-F 0 "#PWR010" H 9800 1500 50  0001 C CNN
+F 0 "#PWR2" H 9800 1500 50  0001 C CNN
 F 1 "Earth" H 9800 1600 50  0001 C CNN
 F 2 "" H 9800 1750 50  0000 C CNN
 F 3 "" H 9800 1750 50  0000 C CNN
@@ -420,8 +387,8 @@ Text Notes 3950 1200 0    60   ~ 0
 180mA
 Text Notes 3950 1350 0    60   ~ 0
 120mA
-Text Notes 7850 850  0    60   ~ 0
-??mA
+Text Notes 7800 900  0    60   ~ 0
+95mA
 Text Notes 6750 700  0    60   ~ 0
 [-5.5dB]
 Text Notes 4600 700  0    60   ~ 0
@@ -509,19 +476,11 @@ Wire Bus Line
 Wire Bus Line
 	4150 3800 6200 3800
 Wire Wire Line
-	4300 1200 4300 750 
-Wire Wire Line
-	4300 750  7750 750 
-Wire Wire Line
-	7750 750  7750 1100
-Wire Wire Line
-	7750 950  8100 950 
-Connection ~ 4300 1200
+	7650 950  8100 950 
 Wire Notes Line
 	7050 1800 7050 1750
 Wire Wire Line
-	7750 1100 8100 1100
-Connection ~ 7750 950 
+	7650 1100 8100 1100
 $Comp
 L R R1
 U 1 1 57CA31F1
@@ -541,7 +500,7 @@ Wire Wire Line
 Text Notes 600  3850 0    60   ~ 0
 Can be switched to a\n10 Ohm resistor in order \nto break the groundloop.
 Text Notes 1200 7200 0    79   ~ 0
-TODO:\n[ ] External interface should be I2C, and no central power\n[ ] PSU parts need to get picked\n[ ] Determine If USB can power everything\n[ ] Power meter\n[x] Choose case/outline restrictions\n[x] SMA contact footprint\n[ ] Switch Micro (STMF0?)
+TODO:\n[ ] External interface should be I2C, and no central power\n[ ] PSU parts need to get picked\n[ ] Determine If USB can power everything\n[X] Power meter\n[x] Choose case/outline restrictions\n[x] SMA contact footprint\n[ ] Switch Micro (STMF0?)\n[ ] Fuse
 $Comp
 L USB_OTG P5
 U 1 1 57CA3B4C
@@ -587,4 +546,44 @@ Wire Wire Line
 	7900 4250 7900 2050
 Wire Wire Line
 	7900 2050 8100 2050
+Text Notes 7800 1050 0    60   ~ 0
+6.2mA
+Text Notes 8250 700  0    60   ~ 0
+[-37 - 11dB]
+Wire Wire Line
+	3850 1500 4150 1500
+Text Label 4150 1500 2    60   ~ 0
+3v3
+Text Label 7650 1100 0    60   ~ 0
+3v3
+Wire Wire Line
+	3850 1650 4150 1650
+Text Label 4150 1650 2    60   ~ 0
+5V5
+Text Label 7650 950  0    60   ~ 0
+5V5
+Wire Wire Line
+	3950 800  2550 800 
+Wire Wire Line
+	2550 800  2550 2650
+Text Label 2550 4950 0    60   ~ 0
+3v3
+$Comp
+L THERMISTOR TH1
+U 1 1 57CC1C91
+P 2100 1050
+F 0 "TH1" V 2000 1050 50  0000 C CNN
+F 1 "750mA working 1.5A trip" V 2200 1150 50  0000 C CNN
+F 2 "FreqSynth:SMD_THERMISTOR" H 2100 1050 50  0001 C CNN
+F 3 "" H 2100 1050 50  0000 C CNN
+F 4 "MF-MSMF075-2" H 2100 1050 60  0001 C CNN "manf#"
+	1    2100 1050
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2350 1050 3000 1050
+Wire Wire Line
+	1850 1050 1700 1050
+Text Notes 2600 1000 0    60   ~ 0
+619.2mA
 $EndSCHEMATC
