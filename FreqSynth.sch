@@ -485,8 +485,6 @@ Wire Wire Line
 	1850 3800 1850 4050
 Text Notes 600  3850 0    60   ~ 0
 Can be switched to a\n10 Ohm resistor in order \nto break the groundloop.
-Text Notes 1200 7200 0    79   ~ 0
-TODO:\n[ ] External interface should be I2C, and no central power\n[ ] PSU parts need to get picked\n[ ] Determine If USB can power everything\n[X] Power meter\n[x] Choose case/outline restrictions\n[x] SMA contact footprint\n[ ] Switch Micro (STMF0?)\n[ ] Fuse
 $Comp
 L USB_OTG P5
 U 1 1 57CA3B4C
