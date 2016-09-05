@@ -1,5 +1,11 @@
 EESchema-DOCLIB  Version 2.0
 #
+$CMP AP65101
+D 1.5A DC/DC BUCK CONVERTER
+K *SOT26*6*
+F http://www.diodes.com/_files/datasheets/AP65101.pdf
+$ENDCMP
+#
 $CMP LMH2110
 D 8-GHz Logarithmic RMS Power Detector with 45-dB Dynamic Range
 F http://www.ti.com/lit/ds/symlink/lmh2110.pdf
@@ -14,8 +20,18 @@ D RF Digital Step Attenuator, 9 kHz–6 GHz
 F http://www.psemi.com/pdf/datasheets/pe43711ds.pdf
 $ENDCMP
 #
+$CMP RT9069
+D 36V, 2µA Iq, 200mA, LDO LIN REG
+F http://www.richtek.com/assets/product_file/RT9069/DS9069-02.pdf
+$ENDCMP
+#
 $CMP SKY13322-375LF
 F http://datasheet.octopart.com/SKY13322-375LF-Skyworks-Solutions-datasheet-11047633.pdf
+$ENDCMP
+#
+$CMP TLV711
+D Dual 200mA LDO LIN REG
+F http://www.ti.com/lit/ds/symlink/tlv7113333d.pdf
 $ENDCMP
 #
 $CMP TRF37A75
