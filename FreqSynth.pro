@@ -1,4 +1,4 @@
-update=Mon 05 Sep 2016 15:13:57 CEST
+update=Sat 10 Sep 2016 20:46:11 CEST
 version=1
 last_client=kicad
 [cvpcb]
@@ -57,5 +57,6 @@ LibName27=atmel
 LibName28=contrib
 LibName29=valves
 LibName30=lib/FreqSynth
+LibName31=stm32f030k6t
 [general]
 version=1
