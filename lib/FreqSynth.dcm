@@ -30,7 +30,7 @@ F http://datasheet.octopart.com/SKY13322-375LF-Skyworks-Solutions-datasheet-1104
 $ENDCMP
 #
 $CMP STM32F030K6T6
-D Custom pinout STM32 F0 Microcontroller IC 32-Bit 48MHz 32KB (32K x 8) FLASH 32-LQFP (7x7)
+D ARM Coretex-M0 128KB Flash
 F http://www.st.com/content/ccc/resource/technical/document/datasheet/a4/5d/0b/0e/87/c4/4d/71/DM00088500.pdf/files/DM00088500.pdf/jcr:content/translations/en.DM00088500.pdf
 $ENDCMP
 #
