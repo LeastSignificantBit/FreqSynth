@@ -1,4 +1,4 @@
-update=Sun 11 Sep 2016 01:23:53 CEST
+update=Sun 11 Sep 2016 11:46:33 CEST
 version=1
 last_client=kicad
 [cvpcb]
@@ -23,8 +23,6 @@ SolderMaskMinWidth=0
 DrawSegmentWidth=0.15
 BoardOutlineThickness=0.15
 ModuleOutlineThickness=0.15
-[general]
-version=1
 [eeschema]
 version=1
 LibDir=
@@ -60,4 +58,5 @@ LibName28=atmel
 LibName29=contrib
 LibName30=valves
 LibName31=lib/FreqSynth
-LibName32=stm32f030k6t
+[general]
+version=1

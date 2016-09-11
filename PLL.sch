@@ -30,7 +30,6 @@ LIBS:atmel
 LIBS:contrib
 LIBS:valves
 LIBS:FreqSynth
-LIBS:stm32f030k6t
 LIBS:FreqSynth-cache
 EELAYER 25 0
 EELAYER END
