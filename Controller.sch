@@ -75,8 +75,6 @@ Text HLabel 7800 3450 2    60   Input ~ 0
 LD_PLL
 Text HLabel 7800 3350 2    60   Output ~ 0
 EN_PLL
-Text HLabel 7800 3250 2    60   Output ~ 0
-EXT_CLK_EN
 Text HLabel 7800 4150 2    60   Output ~ 0
 ATTEN_CS
 $Comp
@@ -470,4 +468,6 @@ F 3 "" H 8550 5250 50  0000 C CNN
 	1    8550 5250
 	1    0    0    -1  
 $EndComp
+Text HLabel 7800 3250 2    60   Output ~ 0
+INT_CLK_EN
 $EndSCHEMATC
