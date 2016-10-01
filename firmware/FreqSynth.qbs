@@ -10,6 +10,7 @@ Project {
         targetName: name + ".output"
 
         files: [
+            "inc/comminterface.h",
             "src/**",
             "system/f030_48_8/Startup.S",
             "system/f030_48_8/System.c",
