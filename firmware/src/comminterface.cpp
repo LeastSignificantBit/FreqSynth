@@ -11,7 +11,7 @@ CommInterface::CommInterface(UsartPollingInputStream *is,
 }
 
 /*
- * Reads a command line from the usart, ignoring garbage like white spaces
+ * Reads a command line from the USART, ignoring garbage like white spaces
  * and unused characters.
  * Allowed chars: a-z,A-Z,0-9,?,. and -
  * arguments are separated with ":" and the line is terminated with ";"
