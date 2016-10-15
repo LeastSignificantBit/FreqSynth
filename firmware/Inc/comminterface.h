@@ -7,11 +7,13 @@
 #pragma once
 
 #include "stm32f0xx_hal.h"
+#include "stm32f0xx_hal_conf.h"
 #include "usart.h"
 #include <vector>
 #include <algorithm>
+#include <stdlib.h>
+#include <string.h>
 
-using namespace stm32plus;
 
 typedef void (*callback_function)(int argc, char* argv[]);
 
@@ -36,7 +38,7 @@ private:
     enum{
         MAX_COMM_LEN = 40,
     };
-    UsartPollingInputStream * _uart;
+    UART_HandleTypeDef *_uart;
     char _commbuf[MAX_COMM_LEN];
     std::vector<Command> _commands;
     callback_function _fallbackCallbackFun;

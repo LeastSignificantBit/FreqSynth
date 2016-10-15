@@ -25,12 +25,9 @@ size_t CommInterface::GetLine()
     size_t n = 0;
 
     while( n < MAX_COMM_LEN-1 ){
-        ret = _is->read();
-        if (ret == stm32plus::UsartPollingInputStream::E_END_OF_STREAM ||
-                ret == stm32plus::UsartPollingInputStream::E_STREAM_ERROR)
+        ret = HAL_UART_Receive(_uart,(uint8_t*) &c, 1, 100);
+        if (ret == HAL_ERROR)
             break;
-        else
-            c = ret & 0x00ff;
 
         if (('A'<=c && c<='Z') ||('a'<=c && c<='z')  || c==':' ||
                 c=='.' || ('0'<=c&& c<='9') ||c=='?' )
@@ -68,7 +65,7 @@ void CommInterface::ParseComm()
     argv.pop_back();
     argv.push_back(0);
     StripCommStr(argv[0]);
-    ExeComm(argc,argv.begin());
+    ExeComm(argc, &argv[0]);
 }
 
 /*

@@ -5,8 +5,8 @@
 #include "gpio.h"
 #include "comminterface.h"
 
-void test(int argc, char* argv[]);
-void fallback(__attribute__((unused)) int argc, char* argv[]);
+void test(__attribute__((unused)) int argc,__attribute__((unused)) char* argv[]);
+void fallback(__attribute__((unused)) int argc,__attribute__((unused)) char* argv[]);
 void loop(__attribute__((unused)) int argc,__attribute__((unused)) char* argv[]);
 void SystemClock_Config(void);
 void Error_Handler(void);
@@ -21,7 +21,7 @@ int main(void)
     MX_SPI1_Init();
     MX_USART1_UART_Init();
 
-    CommInterface ci(&huart1, *fallback);
+    CommInterface ci(&huart1, *fallback, *loop);
 
     ci.Attatch("TEST", *test);
     ci.Run();
@@ -31,26 +31,29 @@ int main(void)
 }
 
 
-void test(int argc, char* argv[])
+void test(__attribute__((unused)) int argc, __attribute__((unused)) char* argv[])
 {
-    out->flush();
-    *out<<"I got";
-    for (int i=0; i<argc; i++)
-        *out<<":"<<argv[i];
-    *out<<"\n";
+    char s[]="Testroutine!\n";
+    if(HAL_UART_Transmit(&huart1,(uint8_t*) s, strlen(s), 100) != HAL_OK)
+    {
+        Error_Handler();
+    }
 
 }
 
-void fallback(__attribute__((unused)) int argc, char* argv[])
+void fallback(__attribute__((unused)) int argc, __attribute__((unused)) char* argv[])
 {
-    *out<<"Command not recognized: "<<argv[0]<<"\n";
+    char s[]="Command not recognized";
+    if(HAL_UART_Transmit(&huart1,(uint8_t*) s, strlen(s), 100) != HAL_OK)
+    {
+        Error_Handler();
+    }
 }
 
 void loop(__attribute__((unused)) int argc,__attribute__((unused)) char* argv[])
 {
 
     HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
-    HAL_Delay(500);
 }
 
 /** System Clock Configuration **/
@@ -104,5 +107,21 @@ void Error_Handler(void)
         HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
         HAL_Delay(100);
     }
+}
+
+
+/** We need these for housekeeping */
+namespace std {
+  void __throw_bad_alloc()
+  {
+      Error_Handler();
+      for(;;){}
+  }
+
+  void __throw_length_error(__attribute__((unused))  char const*e )
+  {
+      Error_Handler();
+      for(;;){}
+  }
 }
 

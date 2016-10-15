@@ -5,14 +5,14 @@ import "qbs/imports/FileExtension.js" as FileExtension
 
 Project {
     qbsSearchPaths: "qbs"
+
+    stm32f_chip: "STM32F030K6"
+    stm32f_type: "030x6"
+    stm32f_family: "0xx"
+    coretex_mcu: "cortex-m0"
+
     CppApplication {
         name: "FreqSynth-FW"
-
-        stm32f_chip: "STM32F030K6"
-        stm32f_type: "030x6"
-        stm32f_family: "0xx"
-        coretex_mcu: "cortex-m0"
-
         targetName: name + ".output"
 
         files: [
