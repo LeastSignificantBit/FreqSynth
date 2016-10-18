@@ -4,6 +4,7 @@
 #include "usart.h"
 #include "gpio.h"
 #include "comminterface.h"
+#include "max2870.h"
 
 void test(__attribute__((unused)) int argc,__attribute__((unused)) char* argv[]);
 void fallback(__attribute__((unused)) int argc,__attribute__((unused)) char* argv[]);
@@ -22,6 +23,12 @@ int main(void)
     MX_USART1_UART_Init();
 
     CommInterface ci(&huart1, *fallback, *loop);
+    MAX2870 pll(hspi1, CS_PLL_GPIO_Port, CS_PLL_Pin,
+                CE_PLL_GPIO_Port, CE_PLL_Pin,
+                EN_PLL_GPIO_Port, EN_PLL_Pin,
+                LD_PLL_GPIO_Port, LD_PLL_Pin);
+    pll.Init();
+
 
     ci.Attatch("TEST", *test);
     ci.Run();
