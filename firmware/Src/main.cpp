@@ -5,11 +5,13 @@
 #include "gpio.h"
 #include "comminterface.h"
 #include "max2870.h"
+#include "printf.h"
 
 void test(__attribute__((unused)) int argc,__attribute__((unused)) char* argv[]);
 void fallback(__attribute__((unused)) int argc,__attribute__((unused)) char* argv[]);
 void loop(__attribute__((unused)) int argc,__attribute__((unused)) char* argv[]);
 void SystemClock_Config(void);
+void myputc ( void* p, char c);
 void Error_Handler(void);
 
 int main(void)
@@ -22,17 +24,19 @@ int main(void)
     MX_SPI1_Init();
     MX_USART1_UART_Init();
 
-    CommInterface ci(&huart1, *fallback, *loop);
-    MAX2870 pll(hspi1, CS_PLL_GPIO_Port, CS_PLL_Pin,
-                CE_PLL_GPIO_Port, CE_PLL_Pin,
-                EN_PLL_GPIO_Port, EN_PLL_Pin,
-                LD_PLL_GPIO_Port, LD_PLL_Pin);
-    pll.Init();
+    init_printf((void *)&huart1,*myputc);
 
+    CommInterface ci(&huart1, *fallback, *loop);
+    //    MAX2870 pll(hspi1, CS_PLL_GPIO_Port, CS_PLL_Pin,
+    //                CE_PLL_GPIO_Port, CE_PLL_Pin,
+    //                EN_PLL_GPIO_Port, EN_PLL_Pin,
+    //                LD_PLL_GPIO_Port, LD_PLL_Pin);
+    //pll.Init();
+
+    printf("Initialized!\n");
 
     ci.Attatch("TEST", *test);
     ci.Run();
-
     return 0;
 
 }
@@ -40,21 +44,12 @@ int main(void)
 
 void test(__attribute__((unused)) int argc, __attribute__((unused)) char* argv[])
 {
-    char s[]="Testroutine!\n";
-    if(HAL_UART_Transmit(&huart1,(uint8_t*) s, strlen(s), 100) != HAL_OK)
-    {
-        Error_Handler();
-    }
-
+    printf("Testroutine!\n");
 }
 
 void fallback(__attribute__((unused)) int argc, __attribute__((unused)) char* argv[])
 {
-    char s[]="Command not recognized";
-    if(HAL_UART_Transmit(&huart1,(uint8_t*) s, strlen(s), 100) != HAL_OK)
-    {
-        Error_Handler();
-    }
+    printf("Command not recognized");
 }
 
 void loop(__attribute__((unused)) int argc,__attribute__((unused)) char* argv[])
@@ -107,8 +102,19 @@ void SystemClock_Config(void)
     HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
 
+void myputc ( void* p, char c)
+{
+    if(HAL_UART_Transmit((UART_HandleTypeDef *) p,(uint8_t*) &c, 1, 10) != HAL_OK)
+    {
+        Error_Handler();
+    }
+
+}
+
 void Error_Handler(void)
 {
+
+    printf("==== ERROR ====\n");
     while(1)
     {
         HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
@@ -119,16 +125,16 @@ void Error_Handler(void)
 
 /** We need these for housekeeping */
 namespace std {
-  void __throw_bad_alloc()
-  {
-      Error_Handler();
-      for(;;){}
-  }
+void __throw_bad_alloc()
+{
+    Error_Handler();
+    for(;;){}
+}
 
-  void __throw_length_error(__attribute__((unused))  char const*e )
-  {
-      Error_Handler();
-      for(;;){}
-  }
+void __throw_length_error(__attribute__((unused))  char const*e )
+{
+    Error_Handler();
+    for(;;){}
+}
 }
 
