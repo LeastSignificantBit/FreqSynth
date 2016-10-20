@@ -18,7 +18,35 @@
 
 #include "freqsynthsystem.h"
 
-FreqSynthSystem::FreqSynthSystem()
-{
 
+//void EnableBOut(int argc, char *argv[])
+//{
+
+//}
+
+//void EnableAOut(int argc, char *argv[])
+//{
+
+//}
+
+//void SetPLLParam(int argc, char *argv[])
+//{
+
+//}
+
+void GetPLLStatus(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
+{
+    printf("0x%08X\n", pll.GetStatus());
+}
+
+//void SetPLLReg(int argc, char *argv[])
+//{
+
+//}
+
+void Fallback(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
+{
+    printf("Command not recognized: %s(", argv[0]);
+    for (int i=1; i<argc; i++)
+        printf("%s%s",argv[i],i==argc-1?")\n":", ");
 }

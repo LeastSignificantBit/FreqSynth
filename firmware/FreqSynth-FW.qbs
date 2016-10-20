@@ -86,7 +86,8 @@ Project {
             "-mcpu="+coretex_mcu,
             "-mthumb",
             "-lc",
-            "-Wl,-Map,build"+targetName+".map",
+            "-Wl,-Map=" + buildDirectory +
+            "/"+name+".map",
             "-ffunction-sections",
             "-fdata-sections",
             "-Wl,--gc-sections",

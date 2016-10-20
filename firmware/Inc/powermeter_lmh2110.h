@@ -24,9 +24,9 @@
 
 class Powermeter_LMH2110
 {
-    uint16_t poll_adc();
+    uint32_t poll_adc();
     ADC_HandleTypeDef* _AdcHandle;
 public:
     Powermeter_LMH2110(ADC_HandleTypeDef *adchandle);
-    uint16_t GetPower_mdB();
+    int32_t GetPower_mdB();
 };

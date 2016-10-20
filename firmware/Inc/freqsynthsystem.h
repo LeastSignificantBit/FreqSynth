@@ -16,14 +16,21 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef FREQSYNTHSYSTEM_H
-#define FREQSYNTHSYSTEM_H
+#pragma once
+#include "stm32f0xx_hal.h"
+#include "adc.h"
+#include "spi.h"
+#include "usart.h"
+#include "gpio.h"
+#include "comminterface.h"
+#include "max2870.h"
+#include "printf.h"
 
+extern MAX2870 pll;
 
-class FreqSynthSystem
-{
-public:
-    FreqSynthSystem();
-};
-
-#endif // FREQSYNTHSYSTEM_H
+void Fallback(int argc, char* argv[]);
+void SetPLLReg(int argc, char* argv[]);
+void GetPLLStatus(int argc, char* argv[]);
+void SetPLLParam(int argc, char* argv[]);
+void EnableAOut(int argc, char* argv[]);
+void EnableBOut(int argc, char* argv[]);

@@ -19,10 +19,9 @@
 #include "comminterface.h"
 
 CommInterface::CommInterface(UART_HandleTypeDef *uart,
-                             callback_function cf, callback_function lf):
+                             callback_function cf):
     _uart(uart),
-    _fallbackCallbackFun(cf),
-    _loopCallbackFun(lf)
+    _fallbackCallbackFun(cf)
 {
 }
 

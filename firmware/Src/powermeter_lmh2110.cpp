@@ -19,7 +19,7 @@
 
 #include "powermeter_lmh2110.h"
 
-uint16_t Powermeter_LMH2110::poll_adc()
+uint32_t Powermeter_LMH2110::poll_adc()
 {
     if (HAL_ADC_Start(_AdcHandle) != HAL_OK)
     {
@@ -41,11 +41,15 @@ Powermeter_LMH2110::Powermeter_LMH2110(ADC_HandleTypeDef *adchandle):
 
 }
 
-uint16_t Powermeter_LMH2110::GetPower_mdB()
+int32_t Powermeter_LMH2110::GetPower_mdB()
 {
-    uint16_t value = poll_adc();
+    /*
+     * 0V=>0x0, 3.3V=>0xFFF(4095)
+     * -34dB=>0V, -11.5dB=>1V
+     * out[mdB] = adc*22500*3.3/4096-34000
+     *          ~ adc*18 - 34000
+     */
+    uint32_t value = poll_adc();
 
-    /* TODO: add conversion */
-
-    return value;
+    return value*18-34000;
 }

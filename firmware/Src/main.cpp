@@ -15,7 +15,6 @@
  * License along with this file; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 #include "stm32f0xx_hal.h"
 #include "adc.h"
 #include "spi.h"
@@ -24,6 +23,7 @@
 #include "comminterface.h"
 #include "max2870.h"
 #include "printf.h"
+#include "freqsynthsystem.h"
 
 void test(__attribute__((unused)) int argc,__attribute__((unused)) char* argv[]);
 void fallback(__attribute__((unused)) int argc,__attribute__((unused)) char* argv[]);
@@ -31,6 +31,12 @@ void loop(__attribute__((unused)) int argc,__attribute__((unused)) char* argv[])
 void SystemClock_Config(void);
 void myputc ( void* p, char c);
 void Error_Handler(void);
+
+MAX2870 pll(&hspi1, CS_PLL_GPIO_Port, CS_PLL_Pin,
+            CE_PLL_GPIO_Port, CE_PLL_Pin,
+            EN_PLL_GPIO_Port, EN_PLL_Pin,
+            LD_PLL_GPIO_Port, LD_PLL_Pin);
+CommInterface ci(&huart1, *Fallback);
 
 int main(void)
 {
@@ -44,42 +50,15 @@ int main(void)
 
     init_printf((void *)&huart1,*myputc);
 
-    CommInterface ci(&huart1, *fallback, *loop);
-    MAX2870 pll(&hspi1, CS_PLL_GPIO_Port, CS_PLL_Pin,
-                CE_PLL_GPIO_Port, CE_PLL_Pin,
-                EN_PLL_GPIO_Port, EN_PLL_Pin,
-                LD_PLL_GPIO_Port, LD_PLL_Pin);
     pll.Init();
+    pll.SetParam(pll.MUX, 12);
 
-    printf("Initialized!\n");
-    pll.SetRegister(5,0x00440005);
-    pll.SetRegister(2,0x10004042);
-    uint32_t ans = pll.GetStatus();
-
-    printf("Register: 0x%08X\n", ans);
-
-    ci.Attatch("TEST", *test);
+    ci.Attatch("STS", *GetPLLStatus);
     ci.Run();
+
     return 0;
-
 }
 
-
-void test(__attribute__((unused)) int argc, __attribute__((unused)) char* argv[])
-{
-    printf("Testroutine!\n");
-}
-
-void fallback(__attribute__((unused)) int argc, __attribute__((unused)) char* argv[])
-{
-    printf("Command not recognized");
-}
-
-void loop(__attribute__((unused)) int argc,__attribute__((unused)) char* argv[])
-{
-
-    HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
-}
 
 /** System Clock Configuration **/
 void SystemClock_Config(void)

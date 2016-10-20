@@ -37,6 +37,22 @@ void MAX2870::_SendReg(uint8_t regno)
     HAL_GPIO_WritePin(_CsPort,_CsPin, GPIO_PIN_SET);
 }
 
+void MAX2870::_OverwriteReg(uint8_t regno, uint32_t val, uint8_t pos, uint8_t len)
+{
+    uint32_t mask = (((uint32_t)1 << len) - 1) << pos;
+    _reg[regno] = (_reg[regno] & ~mask) | ((val << pos) & mask);
+}
+
+void MAX2870::_ResetReg()
+{
+    _reg[0] = 0x007D0000;
+    _reg[1] = 0x2000FFF9;
+    _reg[2] = 0x00004042;
+    _reg[3] = 0x0000000B;
+    _reg[4] = 0x6180B23C;
+    _reg[5] = 0x00400005;
+}
+
 MAX2870::MAX2870(SPI_HandleTypeDef *spih,
                  GPIO_TypeDef *csport, uint16_t cspin,
                  GPIO_TypeDef *ceport, uint16_t cepin,
@@ -44,7 +60,7 @@ MAX2870::MAX2870(SPI_HandleTypeDef *spih,
                  GPIO_TypeDef *ldport, uint16_t ldpin):
     _SPIHandle(spih), _CsPort(csport),_CePort(ceport),_EnPort(enport),_LdPort(ldport),_CsPin(cspin),_CePin(cepin),_EnPin(enpin),_LdPin(ldpin)
 {
-
+    _ResetReg();
 }
 
 void MAX2870::SetRegister(uint8_t reg, uint32_t val)
@@ -82,6 +98,157 @@ uint32_t MAX2870::GetStatus()
     }
     //TODO: maybe shift ret>>2
     return ret>>2;
+}
+
+void MAX2870::SetParam(uint8_t regid, uint32_t val)
+{
+    switch (regid) {
+    case INT:
+        _OverwriteReg(0, val, 31, 1);
+        _SendReg(0);
+        break;
+    case N:
+        _OverwriteReg(0, val, 15, 16);
+        _SendReg(0);
+        break;
+    case FRAC:
+        _OverwriteReg(0, val, 3, 12);
+        _SendReg(0);
+        break;
+    case CPOC:
+        _OverwriteReg(1, val, 31, 1);
+        _SendReg(1);
+        break;
+    case CPL:
+        _OverwriteReg(1, val, 29, 2);
+        _SendReg(1);
+        break;
+    case CPT:
+        _OverwriteReg(1, val, 27, 2);
+        _SendReg(1);
+        break;
+    case P:
+        _OverwriteReg(1, val, 15, 12);
+        _SendReg(1);
+        break;
+    case M:
+        _OverwriteReg(1, val, 3, 12);
+        _SendReg(1);
+        break;
+    case LDS:
+        _OverwriteReg(2, val, 31, 1);
+        _SendReg(2);
+        break;
+    case SDN:
+        _OverwriteReg(2, val, 29, 2);
+        _SendReg(2);
+        break;
+    case MUX:
+        _OverwriteReg(2, val, 26, 4);
+        _OverwriteReg(5, val>>3, 18, 1);
+        _SendReg(5);
+        _SendReg(2);
+        break;
+    case DBR:
+        _OverwriteReg(2, val, 25, 1);
+        _SendReg(2);
+        break;
+    case RDIV2:
+        _OverwriteReg(2, val, 24, 1);
+        _SendReg(2);
+        break;
+    case R:
+        _OverwriteReg(2, val, 14, 10);
+        _SendReg(2);
+        break;
+    case REG4DB:
+        _OverwriteReg(2, val, 13, 1);
+        _SendReg(2);
+        break;
+    case CP:
+        _OverwriteReg(2, val, 9, 4);
+        _SendReg(2);
+        break;
+    case LDF:
+        _OverwriteReg(2, val, 8, 1);
+        _SendReg(2);
+        break;
+    case LDP:
+        _OverwriteReg(2, val, 7, 1);
+        _SendReg(2);
+        break;
+    case PDP:
+        _OverwriteReg(2, val, 6, 1);
+        _SendReg(2);
+        break;
+    case SHDN:
+        _OverwriteReg(2, val, 5, 1);
+        _SendReg(2);
+        break;
+    case TRI:
+        _OverwriteReg(2, val, 4, 1);
+        _SendReg(2);
+        break;
+    case RST:
+        _OverwriteReg(2, val, 3, 1);
+        _SendReg(2);
+        break;
+    case VCO:
+        _OverwriteReg(3, val, 26, 6);
+        _SendReg(3);
+        break;
+    case VAS_SHDN:
+        _OverwriteReg(3, val, 25, 1);
+        _SendReg(3);
+        break;
+    case RETUNE:
+        _OverwriteReg(3, val, 24, 1);
+        _SendReg(3);
+        break;
+    case CDM:
+        _OverwriteReg(3, val, 15, 2);
+        _SendReg(3);
+        break;
+    case CDIV:
+        _OverwriteReg(3, val, 3, 12);
+        _SendReg(3);
+        break;
+    case BS:
+        _OverwriteReg(4, val>>8, 24, 2);
+        _OverwriteReg(4, val, 12, 8);
+        _SendReg(4);
+        break;
+    case FB:
+        _OverwriteReg(4, val, 23, 1);
+        _SendReg(4);
+        break;
+    case DIVA:
+        _OverwriteReg(4, val, 20, 3);
+        _SendReg(4);
+        break;
+    case BDIV:
+        _OverwriteReg(4, val, 9, 1);
+        _SendReg(4);
+        break;
+    case RFB_EN:
+        _OverwriteReg(4, val, 8, 1);
+        _SendReg(4);
+        break;
+    case BPWR:
+        _OverwriteReg(4, val, 6, 2);
+        _SendReg(4);
+        break;
+    case RFA_EN:
+        _OverwriteReg(4, val, 5, 1);
+        _SendReg(4);
+        break;
+    case APWR:
+        _OverwriteReg(4, val, 3, 2);
+        _SendReg(4);
+        break;
+    default:
+        break;
+    }
 }
 
 void MAX2870::Init()

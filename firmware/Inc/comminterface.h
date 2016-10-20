@@ -62,7 +62,7 @@ private:
     void StripCommStr(char* s);
 
 public:
-    CommInterface(UART_HandleTypeDef *uart, callback_function cf=NULL, callback_function lf=NULL);
+    CommInterface(UART_HandleTypeDef *uart, callback_function cf=NULL);
     void Attatch(const char* cm, callback_function cf);
     void Attatch(callback_function cf);
     void Run();
