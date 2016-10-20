@@ -1,3 +1,21 @@
+/*
+ * main.cpp
+ * Copyright (C) 2016  Martin Berglund
+ * This source file is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this file; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
 #include "stm32f0xx_hal.h"
 #include "adc.h"
 #include "spi.h"
@@ -27,13 +45,18 @@ int main(void)
     init_printf((void *)&huart1,*myputc);
 
     CommInterface ci(&huart1, *fallback, *loop);
-    //    MAX2870 pll(hspi1, CS_PLL_GPIO_Port, CS_PLL_Pin,
-    //                CE_PLL_GPIO_Port, CE_PLL_Pin,
-    //                EN_PLL_GPIO_Port, EN_PLL_Pin,
-    //                LD_PLL_GPIO_Port, LD_PLL_Pin);
-    //pll.Init();
+    MAX2870 pll(&hspi1, CS_PLL_GPIO_Port, CS_PLL_Pin,
+                CE_PLL_GPIO_Port, CE_PLL_Pin,
+                EN_PLL_GPIO_Port, EN_PLL_Pin,
+                LD_PLL_GPIO_Port, LD_PLL_Pin);
+    pll.Init();
 
     printf("Initialized!\n");
+    pll.SetRegister(5,0x00440005);
+    pll.SetRegister(2,0x10004042);
+    uint32_t ans = pll.GetStatus();
+
+    printf("Register: 0x%08X\n", ans);
 
     ci.Attatch("TEST", *test);
     ci.Run();
