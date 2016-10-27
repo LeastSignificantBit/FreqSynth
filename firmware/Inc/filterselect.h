@@ -30,6 +30,6 @@ public:
                  GPIO_TypeDef* po2, uint16_t pi2,
                  GPIO_TypeDef* po3, uint16_t pi3,
                  GPIO_TypeDef* po4, uint16_t pi4);
-    void UseFilterNo(int i);
+    void UseFilterNo(uint8_t i);
 
 };

@@ -24,9 +24,15 @@
 #include "gpio.h"
 #include "comminterface.h"
 #include "max2870.h"
+#include "powermeter_lmh2110.h"
+#include "filterselect.h"
+#include "atten_pe43711.h"
 #include "printf.h"
 
-extern MAX2870 pll;
+extern MAX2870 PLLChip;
+extern Powermeter_LMH2110 PowerMeter;
+extern FilterSelect FilterBank;
+extern Atten_PE43711 Attenuator;
 
 void Fallback(int argc, char* argv[]);
 void SetPLLReg(int argc, char* argv[]);
@@ -34,3 +40,14 @@ void GetPLLStatus(int argc, char* argv[]);
 void SetPLLParam(int argc, char* argv[]);
 void EnableAOut(int argc, char* argv[]);
 void EnableBOut(int argc, char* argv[]);
+void ResetPLLReg(int argc, char* argv[]);
+void ReadPower(int argc, char* argv[]);
+void AmpOn(int argc, char* argv[]);
+void AmpOff(int argc, char* argv[]);
+void SetAttenuation(int argc, char* argv[]);
+void SetFilter(int argc, char* argv[]);
+void RFOn(int argc, char* argv[]);
+void RFOff(int argc, char* argv[]);
+
+void OkComm();
+void FailComm();

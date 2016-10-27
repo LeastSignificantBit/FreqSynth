@@ -31,7 +31,6 @@ class MAX2870
 
     void _SendReg(uint8_t regno);
     void _OverwriteReg(uint8_t regno, uint32_t val, uint8_t pos, uint8_t len);
-    void _ResetReg();
 public:
     enum{
         INT, N, FRAC, CPOC, CPL, CPT, P, M, LDS, SDN, MUX, DBR, RDIV2, R,
@@ -51,5 +50,7 @@ public:
     void EnableOutput();
     void DisableOutput();
     bool IsLocked();
+    void ResetReg();
+    uint32_t GetReg(uint8_t i);
 };
 

@@ -36,9 +36,9 @@ FilterSelect::FilterSelect(GPIO_TypeDef *po1, uint16_t pi1,
     _pin[3]  = pi4;
 }
 
-void FilterSelect::UseFilterNo(int i)
+void FilterSelect::UseFilterNo(uint8_t i)
 {
-    if (i<4 && i>=0) {
+    if (i<4) {
         for (int c=0;c<4;c++)
             HAL_GPIO_WritePin(_port[c],_pin[c],GPIO_PIN_RESET);
         HAL_GPIO_WritePin(_port[i],_pin[i],GPIO_PIN_SET);

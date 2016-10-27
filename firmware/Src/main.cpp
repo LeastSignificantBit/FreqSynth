@@ -32,10 +32,20 @@ void SystemClock_Config(void);
 void myputc ( void* p, char c);
 void Error_Handler(void);
 
-MAX2870 pll(&hspi1, CS_PLL_GPIO_Port, CS_PLL_Pin,
+MAX2870 PLLChip(&hspi1, CS_PLL_GPIO_Port, CS_PLL_Pin,
             CE_PLL_GPIO_Port, CE_PLL_Pin,
             EN_PLL_GPIO_Port, EN_PLL_Pin,
             LD_PLL_GPIO_Port, LD_PLL_Pin);
+
+Powermeter_LMH2110 PowerMeter( &hadc );
+
+FilterSelect FilterBank(FILT1_GPIO_Port, FILT1_Pin,
+                        FILT2_GPIO_Port, FILT2_Pin,
+                        FILT3_GPIO_Port, FILT3_Pin,
+                        FILT4_GPIO_Port, FILT4_Pin);
+
+Atten_PE43711 Attenuator(&hspi1, ATTEN_CS_GPIO_Port, ATTEN_CS_Pin);
+
 CommInterface ci(&huart1, *Fallback);
 
 int main(void)
@@ -46,14 +56,30 @@ int main(void)
     MX_GPIO_Init();
     MX_ADC_Init();
     MX_SPI1_Init();
-    MX_USART1_UART_Init();
+    MX_USART1_UART_Init(); // http://stackoverflow.com/questions/24875873/stm32f4-uart-hal-driver
 
     init_printf((void *)&huart1,*myputc);
 
-    pll.Init();
-    pll.SetParam(pll.MUX, 12);
+    HAL_GPIO_WritePin(PWDWN_GPIO_Port, PWDWN_Pin, GPIO_PIN_SET);
 
+    Attenuator.SetAtt(0);
+
+    FilterBank.UseFilterNo(0);
+
+    PLLChip.Init();
+    PLLChip.SetParam(PLLChip.MUX, 12);
+
+    ci.Attatch("SPR", *SetPLLReg);
     ci.Attatch("STS", *GetPLLStatus);
+    ci.Attatch("SPP", *SetPLLParam);
+    ci.Attatch("RPR", *ResetPLLReg);
+    ci.Attatch("RP", *ReadPower);
+    ci.Attatch("AOFF", *AmpOff);
+    ci.Attatch("AON", *AmpOn);
+    ci.Attatch("SA", *SetAttenuation);
+    ci.Attatch("SF", *SetFilter);
+    ci.Attatch("RFON", *RFOn);
+    ci.Attatch("RFOFF", *RFOff);
     ci.Run();
 
     return 0;

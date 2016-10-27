@@ -43,7 +43,7 @@ void MAX2870::_OverwriteReg(uint8_t regno, uint32_t val, uint8_t pos, uint8_t le
     _reg[regno] = (_reg[regno] & ~mask) | ((val << pos) & mask);
 }
 
-void MAX2870::_ResetReg()
+void MAX2870::ResetReg()
 {
     _reg[0] = 0x007D0000;
     _reg[1] = 0x2000FFF9;
@@ -53,6 +53,17 @@ void MAX2870::_ResetReg()
     _reg[5] = 0x00400005;
 }
 
+uint32_t MAX2870::GetReg(uint8_t i)
+{
+    if (i<6)
+        return _reg[i];
+    else if (i==6)
+        return GetStatus();
+    else
+        return 0;
+
+}
+
 MAX2870::MAX2870(SPI_HandleTypeDef *spih,
                  GPIO_TypeDef *csport, uint16_t cspin,
                  GPIO_TypeDef *ceport, uint16_t cepin,
@@ -60,7 +71,7 @@ MAX2870::MAX2870(SPI_HandleTypeDef *spih,
                  GPIO_TypeDef *ldport, uint16_t ldpin):
     _SPIHandle(spih), _CsPort(csport),_CePort(ceport),_EnPort(enport),_LdPort(ldport),_CsPin(cspin),_CePin(cepin),_EnPin(enpin),_LdPin(ldpin)
 {
-    _ResetReg();
+    ResetReg();
 }
 
 void MAX2870::SetRegister(uint8_t reg, uint32_t val)
