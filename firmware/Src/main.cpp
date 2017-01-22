@@ -61,6 +61,7 @@ int main(void)
     init_printf((void *)&huart1,*myputc);
 
     HAL_GPIO_WritePin(PWDWN_GPIO_Port, PWDWN_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(INT_CLK_EN_GPIO_Port, INT_CLK_EN_Pin, GPIO_PIN_SET);
 
     Attenuator.SetAtt(0);
 
@@ -68,6 +69,7 @@ int main(void)
 
     PLLChip.Init();
     PLLChip.SetParam(PLLChip.MUX, 12);
+    PLLChip.SetParam(PLLChip.SHDN, 1);
 
     ci.Attatch("SPR", *SetPLLReg);
     ci.Attatch("STS", *GetPLLStatus);
