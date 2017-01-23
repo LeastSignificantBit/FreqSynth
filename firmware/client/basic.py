@@ -25,21 +25,17 @@ def read_reg(ser_port):
     r.r4.asbyte=int(ser_port.readline().decode("utf-8"), 16)
     r.r5.asbyte=int(ser_port.readline().decode("utf-8"), 16)
     r.r6.asbyte=int(ser_port.readline().decode("utf-8"), 16)
-    sleep(0.2)
     return r
 
 
 def send_cmd(com, ser_port):
     ser_port.write(bytes(com,"utf-8"))
-    sleep(0.007)
+    sleep(0.006)
 
 def gen_reglist(start, stop, step):
-    r = []
-    fr = []
-    for f in range(start, stop, step):
-        r.append(max2870.makereg(f,"frac", 25))
-        fr.append(max2870.GetFreqB(r[-1], 25))
-    return r, fr
+    r = [max2870.register(f) for f in range(start, stop, step)]
+    f = [reg.GetFreqB() for reg in r]
+    return r, f
 
 def get_power(ser_port):
     send_cmd("RP;", ser_port)
@@ -70,7 +66,7 @@ def test_filters(ser_port):
         p.append(sweep_f(ser_port, r))
     power = np.transpose(np.array(p))
     freq  = np.array(f)
-    plt.plot(freq, power)
+    plt.semilogx(freq, power)
     plt.legend(["0","1","2","3"])
 
 
@@ -79,28 +75,29 @@ ser = serial.Serial('/dev/ttyUSB0', 38400)
 ser.setTimeout = 0.2
 
 # Set up PLL
-r = max2870.makereg(90, "frac")
-set_reg(r, ser)
+#r = max2870.register(90, "frac")
+#set_reg(r, ser)
 
 # Enable output
 send_cmd("RFON;", ser)
 send_cmd("AON;", ser)
 send_cmd("SF:0;", ser) 
 send_cmd("SA:0;", ser) 
-ri = [max2870.makereg(x, "frac") for x in range(25, 300,100)]
+#ri = [max2870.makereg(x, "frac") for x in range(25, 300,100)]
 #r, f = gen_reglist(25, 6000, 100) 
 #p = sweep_f(ser, r)
 #plt.plot(f,p)
 #set_reg(r[0], ser)
-for re in ri:
-    max2870.InterpReg(re)
-max2870.InterpReg(r)
+#for re in ri:
+#    max2870.InterpReg(re)
+#max2870.InterpReg(r)
 #test_power(ser)
 #max2870.InterpReg(read_reg(ser))
+test_filters(ser)
 # Disable output
 send_cmd("AOFF;", ser)
 send_cmd("RFOFF;", ser)
 send_cmd("SPP:13:1;", ser)
 
 # Show the plot
-#plt.show()
+plt.show()

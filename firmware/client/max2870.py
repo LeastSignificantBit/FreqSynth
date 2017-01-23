@@ -17,6 +17,8 @@ class Flags_0(ctypes.Union):
         ('map', Flag_bits_0),
         ('asbyte', c_u32)
         ]
+    def __init__(self, b=0):
+        self.asbyte = b
     
 class Flag_bits_1(ctypes.LittleEndianStructure):
     _fields_ = [
@@ -33,6 +35,8 @@ class Flags_1(ctypes.Union):
         ('map', Flag_bits_1),
         ('asbyte', c_u32)
         ]
+    def __init__(self, b=1):
+        self.asbyte = b
 
 class Flag_bits_2(ctypes.LittleEndianStructure):
     _fields_ = [
@@ -58,6 +62,8 @@ class Flags_2(ctypes.Union):
         ('map', Flag_bits_2),
         ('asbyte', c_u32)
         ]
+    def __init__(self, b=2):
+        self.asbyte = b
 
 class Flag_bits_3(ctypes.LittleEndianStructure):
     _fields_ = [
@@ -75,6 +81,8 @@ class Flags_3(ctypes.Union):
         ('map', Flag_bits_3),
         ('asbyte', c_u32)
         ]
+    def __init__(self, b=3):
+        self.asbyte = b
 
 class Flag_bits_4(ctypes.LittleEndianStructure):
     _fields_ = [
@@ -97,6 +105,8 @@ class Flags_4(ctypes.Union):
         ('map', Flag_bits_4),
         ('asbyte', c_u32)
         ]
+    def __init__(self, b=4):
+        self.asbyte = b
 
 class Flag_bits_5(ctypes.LittleEndianStructure):
     _fields_ = [
@@ -114,6 +124,8 @@ class Flags_5(ctypes.Union):
         ('map', Flag_bits_5),
         ('asbyte', c_u32)
         ]
+    def __init__(self, b=5):
+        self.asbyte = b
 
 class Flag_bits_6(ctypes.LittleEndianStructure):
     _fields_ = [
@@ -130,35 +142,112 @@ class Flags_6(ctypes.Union):
         ('map', Flag_bits_6),
         ('asbyte', c_u32)
         ]
+    def __init__(self, b=6):
+        self.asbyte = b
+
 class register:
-    r0 = Flags_0()
-    r1 = Flags_1()
-    r2 = Flags_2()
-    r3 = Flags_3()
-    r4 = Flags_4()
-    r5 = Flags_5()
-    r6 = Flags_6()
+    def __init__(self, f = 900, mode = "frac", f_REF = 25):
+        self.r0 = Flags_0()
+        self.r1 = Flags_1()
+        self.r2 = Flags_2()
+        self.r3 = Flags_3()
+        self.r4 = Flags_4()
+        self.r5 = Flags_5()
+        self.r6 = Flags_6()
+
+        #Ports
+        self.r4.map.RFA_EN = 0
+        self.r4.map.APWR = 0
+        self.r4.map.RFB_EN = 1
+        self.r4.map.BPWR = 1
+        self.r4.map.BDIV = 0
+
+        #Ref
+        self.r2.map.R = 1 # min 1
+        self.r2.map.DBR = 0
+        self.r2.map.RDIV2 = 0
+        f_PDF = f_REF * (1+self.r2.map.DBR)/(self.r2.map.R*(1+self.r2.map.RDIV2)) 
+
+        #Housekeeping
+        self.r1.map.M = 2 # min 2
+        self.r5.map.LD = 1 
+        self.r2.map.PDP = 1
+        self.r2.map.CP = 15
+        self.r3.map.CDIV = 1
+        self.r1.map.P = 1
+        self.r4.map._reserved2 = 0b011000
+
+        #noise cancellation
+        self.r2.map.SDN = 0
+
+        # exclude ADIV from feedback?
+        self.r4.map.FB = 1
+
+        BS = round(f_PDF/0.05)
+        self.r4.map.BS_lsb = BS & 255
+        self.r4.map.BS_msb = BS>> 8
+        
+        self.r2.map.MUX_lsb = 4
+        self.r5.map.MUX_msb = 1
+
+        self.r4.map.DIVA = max(0, ceil(log2(3000/f)))
+        f_VCO = f* pow(2, self.r4.map.DIVA)
+
+        if mode == "int":
+            self.r0.map.INT = 1
+            self.r2.map.LDF = 1
+            self.r1.map.CPOC = 1
+            if self.r4.map.FB == 0:
+                self.r0.map.N = round(f_VCO / f_PDF/min(16, pow(2, self.r4.map.DIVA)))
+                f_VCO_real = self.r0.map.N * f_PDF * min(16, pow(2, self.r4.map.DIVA))
+            else:
+                self.r0.map.N = round(f_VCO / f_PDF)
+                f_VCO_real = self.r0.map.N * f_PDF
+        else:
+            self.r1.map.CPL = 1
+            if self.r4.map.FB == 0:
+                T = f_VCO / f_PDF/min(16, pow(2, self.r4.map.DIVA))
+                self.r0.map.N = floor(T)
+                F = Fraction(T%1).limit_denominator(4095)
+                self.r1.map.M = F.denominator
+                self.r0.map.FRAC = F.numerator
+                f_VCO_real = (self.r0.map.N + self.r0.map.FRAC / self.r1.map.M ) * f_PDF * min(16, pow(2, self.r4.map.DIVA))
+                
+            else:
+                T = f_VCO / f_PDF
+                self.r0.map.N = floor(T)
+                F = Fraction(T%1).limit_denominator(4095)
+                self.r1.map.M = F.denominator
+                self.r0.map.FRAC = F.numerator
+                f_VCO_real = (self.r0.map.N + self.r0.map.FRAC / self.r1.map.M ) * f_PDF
+                
+        f_real = f_VCO_real / pow(2, self.r4.map.DIVA)
+
+    def GetFreqB(self, f_REF = 25):
+        f_PDF = f_REF * (1+self.r2.map.DBR)/(self.r2.map.R*(1+self.r2.map.RDIV2))
+        f_VCO = f_PDF * (self.r0.map.N + self.r0.map.FRAC/self.r1.map.M)
+        f_RFOUTA = f_VCO/pow(2,self.r4.map.DIVA)
+        if self.r4.map.BDIV:
+            f_RFOUTB = f_VCO
+        else:
+            f_RFOUTB = f_RFOUTA
+        return f_RFOUTB
+        
+    def GetFreqA(self, f_REF = 25):
+        f_PDF = f_REF * (1+self.r2.map.DBR)/(self.r2.map.R*(1+self.r2.map.RDIV2))
+        f_VCO = f_PDF * (self.r0.map.N + self.r0.map.FRAC/self.r1.map.M)
+        f_RFOUTA = f_VCO/pow(2,self.r4.map.DIVA)
+        return f_RFOUTA
 
 def enum(*sequential, **named):
     enums = dict(zip(sequential, range(len(sequential))), **named)
     return type('Enum', (), enums)
-propnames = enum('INT', 'N', 'FRAC', 'CPOC', 'CPL', 'CPT', 'P', 'M', 'LDS', 'SDN', 'MUX', 'DBR', 'RDIV2', 'R', 'REG4DB', 'CP', 'LDF', 'LDP', 'PDP', 'SHDN', 'TRI', 'RST', 'VCO', 'VAS_SHDN', 'RETUNE', 'CDM', 'CDIV', 'BS', 'FB', 'DIVA', 'BDIV', 'RFB_EN', 'BPWR', 'RFA_EN', 'APWR', 'F01', 'LD')
 
-def GetFreqB(reg: object, f_REF: object = 25):
-    f_PDF = f_REF * (1+reg.r2.map.DBR)/(reg.r2.map.R*(1+reg.r2.map.RDIV2))
-    f_VCO = f_PDF * (reg.r0.map.N + reg.r0.map.FRAC/reg.r1.map.M)
-    f_RFOUTA = f_VCO/pow(2,reg.r4.map.DIVA)
-    if reg.r4.map.BDIV:
-        f_RFOUTB = f_VCO
-    else:
-        f_RFOUTB = f_RFOUTA
-    return f_RFOUTB
-    
-def GetFreqA(reg: object, f_REF: object = 25):
-    f_PDF = f_REF * (1+reg.r2.map.DBR)/(reg.r2.map.R*(1+reg.r2.map.RDIV2))
-    f_VCO = f_PDF * (reg.r0.map.N + reg.r0.map.FRAC/reg.r1.map.M)
-    f_RFOUTA = f_VCO/pow(2,reg.r4.map.DIVA)
-    return f_RFOUTA
+propnames = enum(
+    'INT', 'N', 'FRAC', 'CPOC', 'CPL', 'CPT', 'P', 'M', 'LDS', 'SDN', 'MUX', 'DBR', 
+    'RDIV2', 'R', 'REG4DB', 'CP', 'LDF', 'LDP', 'PDP', 'SHDN', 'TRI', 'RST', 'VCO', 
+    'VAS_SHDN', 'RETUNE', 'CDM', 'CDIV', 'BS', 'FB', 'DIVA', 'BDIV', 'RFB_EN', 'BPWR', 
+    'RFA_EN', 'APWR', 'F01', 'LD')
 
 def InterpReg(reg: object, f_REF: object = 25, RSET: object = 5100) -> object:
     r0= reg.r0.map
@@ -207,7 +296,7 @@ def InterpReg(reg: object, f_REF: object = 25, RSET: object = 5100) -> object:
         f_RFOUTB = f_RFOUTA
     print ("f_RFOUTA = f_VCO / DIVA[pow-3]")
     print (str(f_RFOUTA)+" MHz = "+str(f_VCO)+" MHz / "+str(DIVA))
-    print ("\nf_RFOUTB = BDIV[1]? f_RFOUTA : f_VCO")
+    print ("\nf_RFOUTB = BDIV[1]? f_VCO : f_RFOUTA" )
     print (str(f_RFOUTB)+" MHz")
 
     print ("\nCharge Pump Current:")
@@ -275,81 +364,3 @@ def InterpReg(reg: object, f_REF: object = 25, RSET: object = 5100) -> object:
     print("ADC: "+str(r6.ADC))
     print("VCO: #"+str(r6.V))
     
-def makereg(f, mode = "frac", f_REF = 25):
-    r = register()
-    r.r0.asbyte = 0
-    r.r1.asbyte = 1
-    r.r2.asbyte = 2
-    r.r3.asbyte = 3
-    r.r4.asbyte = 4
-    r.r5.asbyte = 5
-    r.r6.asbyte = 6
-
-    #Ports
-    r.r4.map.RFA_EN = 0
-    r.r4.map.APWR = 0
-    r.r4.map.RFB_EN = 1
-    r.r4.map.BPWR = 1
-    r.r4.map.BDIV = 0
-
-    #Ref
-    r.r2.map.R = 1 # min 1
-    r.r2.map.DBR = 0
-    r.r2.map.RDIV2 = 0
-    f_PDF = f_REF * (1+r.r2.map.DBR)/(r.r2.map.R*(1+r.r2.map.RDIV2)) 
-
-    #Housekeeping
-    r.r1.map.M = 2 # min 2
-    r.r5.map.LD = 1 
-    r.r2.map.PDP = 1
-    r.r2.map.CP = 15
-    r.r3.map.CDIV = 1
-    r.r1.map.P = 1
-    r.r4.map._reserved2 = 0b011000
-
-    #noise cancellation
-    r.r2.map.SDN = 0
-
-    # exclude ADIV from feedback?
-    r.r4.map.FB = 1
-
-    BS = round(f_PDF/0.05)
-    r.r4.map.BS_lsb = BS & 255
-    r.r4.map.BS_msb = BS>> 8
-    
-    r.r2.map.MUX_lsb = 4
-    r.r5.map.MUX_msb = 1
-
-    r.r4.map.DIVA = max(0, ceil(log2(3000/f)))
-    f_VCO = f* pow(2, r.r4.map.DIVA)
-
-    if mode == "int":
-        r.r0.map.INT = 1
-        r.r2.map.LDF = 1
-        r.r1.map.CPOC = 1
-        if r.r4.map.FB == 0:
-            r.r0.map.N = round(f_VCO / f_PDF/min(16, pow(2, r.r4.map.DIVA)))
-            f_VCO_real = r.r0.map.N * f_PDF * min(16, pow(2, r.r4.map.DIVA))
-        else:
-            r.r0.map.N = round(f_VCO / f_PDF)
-            f_VCO_real = r.r0.map.N * f_PDF
-    else:
-        r.r1.map.CPL = 1
-        if r.r4.map.FB == 0:
-            T = f_VCO / f_PDF/min(16, pow(2, r.r4.map.DIVA))
-            r.r0.map.N = floor(T)
-            F = Fraction(T%1).limit_denominator(4095)
-            r.r1.map.M = F.denominator
-            r.r0.map.FRAC = F.numerator
-            f_VCO_real = (r.r0.map.N + r.r0.map.FRAC / r.r1.map.M ) * f_PDF * min(16, pow(2, r.r4.map.DIVA))
-            
-        else:
-            T = f_VCO / f_PDF
-            r.r0.map.N = floor(T)
-            F = Fraction(T%1).limit_denominator(4095)
-            r.r1.map.M = F.denominator
-            r.r0.map.FRAC = F.numerator
-            f_VCO_real = (r.r0.map.N + r.r0.map.FRAC / r.r1.map.M ) * f_PDF
-            
-    f_real = f_VCO_real / pow(2, r.r4.map.DIVA)
-    return r
